@@ -1,8 +1,8 @@
-import { createContext, useReducer, useCallback, useEffect, useContext, useState } from 'react'
+import {useCallback, useEffect, useContext, useState } from 'react'
 import { AppContext } from '../../context/GithubContext';
 import axios from 'axios'
 import logo from './logo.svg';
-import './header.css';
+import './css/style.css';
 
 
 
