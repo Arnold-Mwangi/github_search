@@ -31,6 +31,7 @@ function Header() {
             // Fetch repositories
             axios
                 .get(`https://api.github.com/search/repositories?q=${searchQuery}`)
+                
                 .then((res) => {
                     console.log('Repositories response:', res); // Log the entire response
                     console.log('Repositories payload:', res.data.items); // Log the payload
