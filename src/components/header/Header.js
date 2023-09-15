@@ -7,22 +7,55 @@ import './css/style.css';
 
 
 function Header() {
-    const { Users, dispatch } = useContext(AppContext)
-    const [searchQuery, setsearchQuery] = useState('');
-    const [searchType, setSearchType] = useState('user')
+    const { Users, dispatch, searchQuery, searchType } = useContext(AppContext)
+    // const [searchQuery, setsearchQuery] = useState('');
+    // const [searchType, setSearchType] = useState('user')
 
 
     const handleSearch = useCallback(() => {
-        const endpoint = searchType === 'user' ? 'users' : 'repositories'
-        axios
-            .get(`https://api.github.com/search/${endpoint}?q=${searchQuery}`)
-            .then((res) => {
-                dispatch({ type: 'SET_USERS', payload: res.data.items })
-            })
-            .catch((error) => {
-                console.error('Error', error)
-            });
+        const endpoint = searchType === 'user' ? 'users' : 'repositories';
+        dispatch({ type: 'SET_USERS', payload: [] });
+        dispatch({ type: 'SET_REPOS', payload: [] });
+        // Create an object to store the API request parameters
+        const params = {
+            q: searchQuery,
+        };
+
+        // If the endpoint is 'repositories', add pagination parameters
+        if (endpoint === 'repositories') {
+            params.per_page = 20; // Number of items per page
+            params.page = 1; // Set the initial page number
+        }
+
+        if (endpoint === 'repositories') {
+            // Fetch repositories
+            axios
+                .get(`https://api.github.com/search/repositories?q=${searchQuery}`)
+                .then((res) => {
+                    console.log('Repositories response:', res); // Log the entire response
+                    console.log('Repositories payload:', res.data.items); // Log the payload
+                    // Set the fetched repositories under the Repositories state
+                    dispatch({ type: 'SET_REPOS', payload: res.data.items });
+                })
+                .catch((error) => {
+                    console.error('Error fetching repositories:', error);
+                });
+        } else if (endpoint === 'users') {
+            // Fetch users
+            axios
+                .get(`https://api.github.com/search/users?q=${searchQuery}`)
+                .then((res) => {
+                    console.log('Users response:', res); // Log the entire response
+                    console.log('Users payload:', res.data.items); // Log the payload
+                    // Set the fetched users under the Users state
+                    dispatch({ type: 'SET_USERS', payload: res.data.items });
+                })
+                .catch((error) => {
+                    console.error('Error fetching users:', error);
+                });
+        }
     }, [searchQuery, searchType, dispatch]);
+
 
 
     useEffect(() => {
@@ -47,7 +80,7 @@ function Header() {
 
     useEffect(() => {
         // Fetch additional data when Users is an array and there is a valid search query
-        if (Array.isArray(Users) &&  Users.length > 0  && searchType === 'user') {
+        if (Array.isArray(Users) && Users.length > 0 && searchType === 'user') {
             const firstUser = Users[0];
 
             // Fetch Followers
@@ -120,7 +153,7 @@ function Header() {
                     console.log('Total repositories:', totalCount);
                     // Set the total count in AppContext
                     dispatch({ type: 'SET_REPOS_COUNT', payload: totalCount });
-                    
+
                 })
                 .catch((error) => {
                     console.error('Error fetching repositories:', error);
@@ -141,11 +174,11 @@ function Header() {
                         type='text'
                         placeholder='search...'
                         value={searchQuery}
-                        onChange={(e) => setsearchQuery(e.target.value)}
+                        onChange={(e) => dispatch({ type: 'SET_SEARCH_QUERY', payload: e.target.value })}
                     />
                     <select
                         value={searchType}
-                        onChange={(e) => setSearchType(e.target.value)}
+                        onChange={(e) => dispatch({ type: 'SET_SEARCH_TYPE', payload: e.target.value })}
                     >
                         <option value='user'>User</option>
                         <option vaue='repo'>Repository</option>
