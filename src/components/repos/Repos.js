@@ -10,39 +10,74 @@ function Repos() {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
   
-    const { Users, Repositories, searchType } = useContext(AppContext);
-    console.log(searchType)
+    const { Users, Repositories, searchType, searchQuery } = useContext(AppContext);
+
+    const currentRepositories = Repositories.slice(startIndex, endIndex);
 
     const paginatedRepositories = Repositories.slice(startIndex, endIndex);
-  
+     // Calculate the total number of pages
+    const totalPages = Math.ceil(Repositories.length / itemsPerPage);
+    
     const handlePageChange = (pageNumber) => {
       setCurrentPage(pageNumber);
     };
-  if (Users.length > 0){
-    return (
-      <div>
-        <div className="repos">
-          {paginatedRepositories.map((repo) => (
-            <div className="repo" key={repo.id}>
-              <h1>Repository</h1>
-              <h2>{repo.name}</h2>
-              <p>{repo.description}</p>
-            </div>
-          ))}
+
+
+  if (searchType === 'user'){
+    if (Users.length > 0){
+      return (
+        <div>
+          <div className="repos">
+            {paginatedRepositories.map((repo) => (
+              <div className="repo" key={repo.id}>
+                <h1>Repository</h1>
+                <h2>{repo.name}</h2>
+                <p>{repo.description}</p>
+              </div>
+            ))}
+          </div>
+    
+          <div className="pagination">
+            {Array.from({ length: Math.ceil(Repositories.length / itemsPerPage) }, (_, index) => (
+              <button
+                key={index}
+                onClick={() => handlePageChange(index + 1)}
+                className={currentPage === index + 1 ? 'active' : ''}
+              >
+                {index + 1}
+              </button>
+            ))}
+          </div>
         </div>
-  
-        <div className="pagination">
-          {Array.from({ length: Math.ceil(Repositories.length / itemsPerPage) }, (_, index) => (
-            <button
-              key={index}
-              onClick={() => handlePageChange(index + 1)}
-              className={currentPage === index + 1 ? 'active' : ''}
-            >
-              {index + 1}
-            </button>
-          ))}
+      );
+    }else{
+      return(
+        <div>No  Repos found for ${searchQuery}</div>
+      )
+    }
+
+  }else{
+    return(
+      <div className="repos">
+      {currentRepositories.map((repo) => (
+        <div className="repo" key={repo.id}>
+          <h1>repos</h1>
+          <h2>{repo.name}</h2>
+          <p>{repo.description}</p>
         </div>
+      ))}
+      <div className="pagination">
+        {Array.from({ length: totalPages }, (_, index) => (
+          <button
+            key={index + 1}
+            onClick={() => handlePageChange(index + 1)}
+            className={currentPage === index + 1 ? "active" : ""}
+          >
+            {index + 1}
+          </button>
+        ))}
       </div>
+    </div>
     );
   }
 
