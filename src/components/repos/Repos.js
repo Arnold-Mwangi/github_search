@@ -10,13 +10,15 @@ function Repos() {
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
   
-    const { Users, Repositories } = useContext(AppContext);
+    const { Users, Repositories, searchType } = useContext(AppContext);
+    console.log(searchType)
+
     const paginatedRepositories = Repositories.slice(startIndex, endIndex);
   
     const handlePageChange = (pageNumber) => {
       setCurrentPage(pageNumber);
     };
-  
+  if (Users.length > 0){
     return (
       <div>
         <div className="repos">
@@ -42,6 +44,8 @@ function Repos() {
         </div>
       </div>
     );
+  }
+
   }
   
   export default Repos;
