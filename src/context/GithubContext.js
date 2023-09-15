@@ -15,7 +15,12 @@ const githubReducer = (state, action) => {
         case 'SET_REPOS':
             return { ...state, Repositories: action.payload };
         case 'SET_REPOS_COUNT':
-                return { ...state, RepositoriesCount: action.payload };
+            return { ...state, RepositoriesCount: action.payload };
+
+        case 'SET_SEARCH_QUERY': 
+            return { ...state, searchQuery: action.payload };
+        case 'SET_SEARCH_TYPE': 
+            return { ...state, searchType: action.payload };
         default:
             return state;
     }
@@ -28,6 +33,8 @@ export default function GithubContext({ children }) {
         Following: [],
         Repositories: [],
         RepositoriesCount: null,
+        searchQuery: '',
+        searchType: 'user',
     });
 
 
