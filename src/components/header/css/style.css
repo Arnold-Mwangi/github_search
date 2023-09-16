@@ -1,5 +1,7 @@
-.App {
+.header {
     text-align: center;
+    margin-bottom: 2px;
+    
 }
 
 .App-logo {
@@ -21,6 +23,7 @@
     justify-content: space-between;
     font-size: calc(10px + 2vmin);
     color: white;
+    padding: 5px;
 }
 
 .App-link {
@@ -37,3 +40,106 @@
         transform: rotate(360deg);
     }
 }
+
+/* style form input */
+.search-form{
+    position: relative;
+    top: 50%;
+    left: 50%;
+    width: 350px;
+    height: 45px;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.15);
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    transition: all 0.4s ease;
+    &.focus{
+        box-shadow: 0 3px 4px rgba(255, 255, 255, 0.15);
+    }
+}
+
+.search-input{
+    position: absolute;
+    top: 10px;
+    left: 38px;
+    font-size: 14px;
+    background-color: none;
+    color:#5a6674;
+    width: 195px;
+    height: 25px;
+    border: none;
+    appearance: none;
+    outline: none;
+
+    &::webkit-search-cancel-button{
+        appearance: none;
+    }
+}
+
+.search-button{
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    height: 20px;
+    padding: 0;
+    margin:0;
+    border: none;
+    background-color: transparent;
+    outline: none!important;
+    cursor: pointer;
+
+
+}
+.fas{
+
+    fill: #5a6674;
+    color: red;
+    font-size: 20px;
+}
+
+.search-option{
+    position: absolute;
+    text-align: right;
+    top: 10px;
+    right: 15px;
+
+}
+
+select{
+    position: relative;
+    display: inline-block;
+    margin: 0 1px;
+    cursor: pointer;
+    border: none;
+    padding: 2px;
+    font-size: 20px;
+    background-color: transparent;
+}
+select:hover{
+    outline: none;  
+    color:#e24040;
+    border-radius: 10px;
+    border: none;
+}
+select:focus{
+    outline: none;
+    border: none;
+    color:#e24040;
+}
+option{
+    position: absolute;
+    font-size: 2erm;
+    top: 0;
+    left:0;
+    opacity: 0.01;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    margin: 0, 1px;
+    background-color: whitesmoke;
+    color:#5a6674
+
+
+}
+
