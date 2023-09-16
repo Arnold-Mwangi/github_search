@@ -6,6 +6,9 @@ import './css/style.css';
 
 
 
+
+
+
 function Header() {
     const { Users, dispatch, searchQuery, searchType } = useContext(AppContext)
     // const [searchQuery, setsearchQuery] = useState('');
@@ -31,7 +34,7 @@ function Header() {
             // Fetch repositories
             axios
                 .get(`https://api.github.com/search/repositories?q=${searchQuery}`)
-                
+
                 .then((res) => {
                     console.log('Repositories response:', res); // Log the entire response
                     console.log('Repositories payload:', res.data.items); // Log the payload
@@ -75,8 +78,12 @@ function Header() {
 
     }, [dispatch])
 
-    const handleSearchButtonClick = () => {
-        handleSearch(); // Call the handleSearch function when the button is clicked
+    const handleSearchButtonClick = (e) => {
+        e.preventDefault()
+        handleSearch();
+        dispatch({ type: 'SET_SEARCH_QUERY', payload: '' })
+        
+
     };
 
     useEffect(() => {
@@ -166,25 +173,39 @@ function Header() {
 
 
     return (
-        <div className="App">
+        <div className="header">
             <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo" />
 
                 <div>
-                    <input
-                        type='text'
-                        placeholder='search...'
-                        value={searchQuery}
-                        onChange={(e) => dispatch({ type: 'SET_SEARCH_QUERY', payload: e.target.value })}
-                    />
-                    <select
-                        value={searchType}
-                        onChange={(e) => dispatch({ type: 'SET_SEARCH_TYPE', payload: e.target.value })}
-                    >
-                        <option value='user'>User</option>
-                        <option vaue='repo'>Repository</option>
-                    </select>
-                    <button onClick={handleSearchButtonClick}>search</button>
+                    <form className='search-form'>
+                        <input
+                            className='search-input'
+                            type='text'
+                            placeholder='search...'
+                            value={searchQuery}
+                            onChange={(e) => dispatch({ type: 'SET_SEARCH_QUERY', payload: e.target.value })}
+                        />
+
+                        <button className='search-button' onClick={handleSearchButtonClick}>
+
+                            <i className="fas fa-search"></i>
+                        </button>
+
+                        <div className='search-option'>
+                            <select
+
+                                value={searchType}
+                                onChange={(e) => dispatch({ type: 'SET_SEARCH_TYPE', payload: e.target.value })}
+                            >
+                                <option value='user'>User</option>
+                                <option vaue='repo'>Repository</option>
+                            </select>
+                        </div>
+                    </form>
+
+
+
                 </div>
 
             </header>
